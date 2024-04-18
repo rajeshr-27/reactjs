@@ -8,21 +8,21 @@ const user = JSON.parse(localStorage.getItem('user'));
 
 export const login = createAsyncThunk(
 	'auth/login',
-	async ({email,password}, thunkAPI) => {
+	async ({email,password}, {rejectWithValue}) => {
 		try{
 			const data = await AuthService.login(email,password);
 			return {user:data};
 
 		} catch(error){ 
 			const message =error.response.data.message
-			thunkAPI.dispatch(setMessage(message));
-			return thunkAPI.rejectWithValue();
+			 
+			return rejectWithValue(message);
 		}
 	}
 	);
 const initialState = user 
-	? {isLoggedIn:true, user} 
-	: {isLoggedIn:false, user:null};
+	? {isLoggedIn:true, user, error:""} 
+	: {isLoggedIn:false, user:null,error:""};
 
 const authSlice = createSlice({
 	name: 'auth',
@@ -32,6 +32,9 @@ const authSlice = createSlice({
 			state.isLoggedIn = false;
 			state.user = null;
 			localStorage.removeItem('user')
+		},
+		clearError:(state)=> {
+			state.error = ""
 		}
 	},
 	extraReducers:(builder)=> {
@@ -39,9 +42,10 @@ const authSlice = createSlice({
 			state.isLoggedIn = true;
 			state.user= action.payload.user
 		})
-		builder.addCase(login.rejected, (state)=> {
+		builder.addCase(login.rejected, (state,action)=> {
 			state.isLoggedIn = false;
 			state.user = null;
+			state.error = action.payload;
 		})
 		 
 	}
@@ -50,6 +54,6 @@ const authSlice = createSlice({
 
 const {reducer, actions} = authSlice
 
-export const {logout} = actions
+export const {logout, clearError} = actions
 
 export default reducer;

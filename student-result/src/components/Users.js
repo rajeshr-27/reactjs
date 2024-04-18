@@ -62,15 +62,17 @@ function Users() {
 									      		</td>
 									      	</tr>
 							      			))
-							      		: ''
-							      	}</tbody>
+							      		: <tr>
+							      			<td colSpan="4">No Record Found</td>
+							      			</tr>
+							      		}
+							      	</tbody>
 							</Table>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
 		)
 }
 

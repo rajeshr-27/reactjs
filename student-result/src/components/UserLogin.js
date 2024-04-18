@@ -6,7 +6,7 @@ import AuthService from './AuthService';
 import{useNavigate, Navigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {login} from '../slices/authSlice';
+import {login, clearError} from '../slices/authSlice';
 
 import {clearMessage} from '../slices/message';
 
@@ -23,7 +23,7 @@ function UserLogin(){
 
 	const dispatch = useDispatch();
 
-	const {isLoggedIn} = useSelector((state) => state.auth);
+	const {isLoggedIn,error} = useSelector((state) => state.auth);
 
 	const {message} = useSelector((state) => state.message);
 
@@ -53,12 +53,12 @@ function UserLogin(){
 		const {email,password} = frmData;
 		 
 		dispatch(login({email,password}))
-		.unwrap()
-		.then(() => {
-			//navigate("/users", {replace:true});
-		});
 	};
 
+	if(error){
+		alert(error);
+		dispatch(clearError())
+	}
 	if(isLoggedIn){
 		return <Navigate to="/users" />
 	}
