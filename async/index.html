@@ -1,0 +1,66 @@
+<script>
+
+// async function getData() {
+// 	return 'Test data';
+// }
+
+// const data = getData();
+
+// data.then(res=>console.log(res));
+
+const p1 = new Promise((resolve,reject) => {
+	setInterval(()=> {
+		resolve('Promise resolved value');
+	}, 5000)	
+})
+
+const p2 = new Promise((resolve,reject) => {
+	setInterval(()=> {
+		resolve('Promise resolved value');
+	}, 10000)	
+})
+
+//Normal function call the promise value
+
+// function getData() {
+// 	p.then(res=> console.log(res));
+// 	console.log('welcome javascript');
+// }
+
+
+//getData();
+
+//Async function call the promise value
+
+//await can only be used inside an async fuction
+/*async function handlePromise() {
+	console.log("hello world")
+	const val = await p1;
+	console.log("welcome javascript")
+	console.log(val);
+
+	const val2 = await p2;
+	console.log("welcome javascript")
+	console.log(val2);
+
+}*/
+
+const API_URL = "https://jsonplaceholder.typicode.com/users";
+
+async function handlePromise() {
+
+	try{
+
+		const data = await fetch(API_URL)
+
+		const json_value = await data.json();
+
+		console.log(json_value);
+
+	}catch(error){
+		console.log(error);
+	}
+	
+}
+handlePromise();
+</script>
